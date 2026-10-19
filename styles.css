@@ -8,7 +8,7 @@ nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:#16161
 nav .w{display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{font-weight:800;font-size:22px;letter-spacing:.5px}.logo span{color:var(--ac)}.logo small{display:block;font-size:10px;font-weight:500;color:var(--mu);letter-spacing:2px;margin-top:-4px}
 nav ul{display:flex;gap:22px;list-style:none;font-size:14px}nav ul a:hover{color:var(--ac)}
-.btn{display:inline-block;background:var(--ac);color:#fff;padding:12px 24px;font-weight:600;font-size:14px;border:0;cursor:pointer}.btn.o{background:none;border:1px solid var(--ac);color:var(--ac)}
+.btn{display:inline-block;background:var(--ac);color:#fff;padding:9px 16px;font-weight:600;font-size:13px;border:0;cursor:pointer}.btn.o{background:none;border:1px solid var(--ac);color:var(--ac)}
 @media(max-width:760px){nav ul{display:none}.top .w>:nth-child(n+3){display:none}}
 .hero{position:relative;padding:70px 0 0;background:linear-gradient(90deg,#161616 40%,#161616cc),url("Images/Hero/WhatsApp%20Image%202026-10-19%20at%2011.44.52.jpeg") center/cover;overflow:hidden}
 .hero .w{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:end}
