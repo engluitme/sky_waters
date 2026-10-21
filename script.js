@@ -96,9 +96,15 @@
     const email = form.elements.email.value.trim();
     const service = form.elements.service.value;
     const details = form.elements.message.value.trim();
+    const whatsappNumber = form.dataset.whatsappNumber || '263713041100';
 
     if (!name || !phone || !service || !details) {
       status.textContent = 'Please fill in all required fields.';
+      return;
+    }
+
+    if (!/^[0-9]{7,15}$/.test(whatsappNumber)) {
+      status.textContent = 'The WhatsApp contact number is not configured correctly. Please contact us directly.';
       return;
     }
 
@@ -111,7 +117,7 @@
       `Project details: ${details}`
     ].join('\n');
 
-    const url = `https://wa.me/263713041100?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     const win = window.open(url, '_blank', 'noopener,noreferrer');
 
     if (win) {
