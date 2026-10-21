@@ -687,5 +687,16 @@ footer a:hover { color: var(--ac); }
   footer .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   footer .g4 > div:first-child,
   footer .g4 > div:last-child { grid-column: 1 / -1; }
+  .footer-quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 12px;
+    align-content: start;
+  }
+  .footer-quick-links h4 { width: 100%; }
+  .footer-quick-links a { display: inline-flex; }
+  .footer-contact h4,
+  .footer-contact > a { display: none; }
+  .footer-contact .socials { margin-top: 0; }
   .socials { justify-content: center; }
 }
