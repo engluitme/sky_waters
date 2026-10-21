@@ -191,15 +191,40 @@
   applyBlanket();
 
   /* ----------------------------------------------------------
-     Contact form – simple feedback
+     Quote form – open a prefilled WhatsApp message
      ---------------------------------------------------------- */
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = this.querySelector('button');
-      btn.textContent = 'Thank you – we’ll be in touch!';
-      btn.disabled = true;
+      var form = this;
+      var status = document.getElementById('quote-status');
+      var name = form.elements.name.value.trim();
+      var phone = form.elements.phone.value.trim();
+      var email = form.elements.email.value.trim();
+      var service = form.elements.service.value;
+      var details = form.elements.message.value.trim();
+      var message = [
+        'Quote request',
+        'Name: ' + name,
+        'Phone / WhatsApp: ' + phone,
+        'Email: ' + (email || 'Not provided'),
+        'Service: ' + service,
+        'Project details: ' + details
+      ].join('\n');
+      var whatsappUrl = 'https://wa.me/263713041100?text=' + encodeURIComponent(message);
+      var whatsappWindow = window.open(whatsappUrl, '_blank');
+      if (whatsappWindow) {
+        whatsappWindow.opener = null;
+        status.textContent = 'WhatsApp opened with your quote request. Send the message there to complete your enquiry.';
+      } else {
+        var link = document.createElement('a');
+        link.href = whatsappUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'Open WhatsApp to send your quote request';
+        status.replaceChildren(link);
+      }
     });
   }
 
