@@ -52,13 +52,28 @@
     document.querySelectorAll('[data-cms-image]').forEach(element => {
       const key = element.dataset.cmsImage;
       const value = content[key];
-      if (typeof value === 'string') setSafeAttribute(element, 'src', value, safeImage, key);
+      if (typeof value !== 'string') return;
+      if (value === '') {
+        element.hidden = true;
+        element.removeAttribute('src');
+        return;
+      }
+      try {
+        element.setAttribute('src', safeImage(value));
+        element.hidden = false;
+      } catch (error) {
+        console.error(`Could not apply saved ${key} content. The built-in value is unchanged.`, error);
+      }
     });
 
     document.querySelectorAll('[data-cms-background]').forEach(element => {
       const key = element.dataset.cmsBackground;
       const value = content[key];
       if (typeof value !== 'string') return;
+      if (value === '') {
+        element.style.setProperty('--hero-background-image', 'none');
+        return;
+      }
       try {
         element.style.setProperty('--hero-background-image', `url("${safeImage(value)}")`);
       } catch (error) {

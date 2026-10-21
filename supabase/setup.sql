@@ -1,5 +1,4 @@
--- When running this script, replace the admin@example.com placeholder with
--- the admin user's email. Keep the placeholder in the repository copy.
+-- Admin account: admin@skywaters.co.zw
 
 create table if not exists public.site_content (
   id text primary key check (id = 'main'),
@@ -41,7 +40,7 @@ stable
 security invoker
 set search_path = ''
 as $$
-  select coalesce((auth.jwt() ->> 'email') = 'admin@example.com', false);
+  select coalesce((auth.jwt() ->> 'email') = 'admin@skywaters.co.zw', false);
 $$;
 
 revoke all on function public.is_site_admin() from public, anon;

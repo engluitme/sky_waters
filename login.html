@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin sign in | Sky Waters</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body data-admin-page="login">
+  <main class="admin-shell login-shell">
+    <header class="admin-header">
+      <a class="admin-brand" href="index.html">SKY<span>WATERS</span>ZW</a>
+      <p>Website admin</p>
+    </header>
+    <section id="setup-notice" class="notice" hidden>
+      <h1>Connect Supabase to get started</h1>
+      <p>Add your Supabase project URL and public anon key to <code>backend-config.js</code>, then follow the setup steps in the project README.</p>
+    </section>
+    <section id="login-panel" class="panel login-panel" hidden>
+      <p class="eyebrow">SKY WATERS WEBSITE</p>
+      <h1>Admin sign in</h1>
+      <form id="login-form">
+        <label>Email
+          <input name="email" type="email" autocomplete="username" required>
+        </label>
+        <label>Password
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">Sign in</button>
+      </form>
+    </section>
+    <p id="admin-status" class="status" role="status" aria-live="polite"></p>
+  </main>
+  <script src="backend-config.js"></script>
+  <script src="admin.js" defer></script>
+</body>
+</html>

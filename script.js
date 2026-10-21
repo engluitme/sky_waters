@@ -4,32 +4,52 @@
   const sd = document.getElementById('sd');
   if (!sl || !sd) return;
 
-  const n = sl.children.length;
   let cur = 0;
   let t;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  for (let i = 0; i < n; i++) {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('aria-label', `Photo ${i + 1}`);
-    b.addEventListener('click', () => {
-      go(i);
-      restart();
+  function slides() {
+    return [...sl.children].filter(slide => !slide.hidden);
+  }
+
+  function slideLeft(slide) {
+    return slide.getBoundingClientRect().left - sl.getBoundingClientRect().left + sl.scrollLeft;
+  }
+
+  function renderDots() {
+    sd.replaceChildren();
+    slides().forEach((slide, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Photo ${i + 1}`);
+      b.addEventListener('click', () => {
+        go(i);
+        restart();
+      });
+      sd.appendChild(b);
     });
-    sd.appendChild(b);
   }
 
   function mark() {
-    cur = Math.round(sl.scrollLeft / sl.clientWidth) || 0;
+    const visibleSlides = slides();
+    if (!visibleSlides.length) {
+      cur = 0;
+      sd.hidden = true;
+      return;
+    }
+    sd.hidden = false;
+    cur = visibleSlides.reduce((closest, slide, i) =>
+      Math.abs(slideLeft(slide) - sl.scrollLeft) < Math.abs(slideLeft(visibleSlides[closest]) - sl.scrollLeft) ? i : closest, 0);
     [...sd.children].forEach((b, i) => {
       b.setAttribute('aria-current', i === cur ? 'true' : 'false');
     });
   }
 
   function go(i) {
-    cur = (i + n) % n;
-    sl.scrollTo({ left: cur * sl.clientWidth, behavior: 'smooth' });
+    const visibleSlides = slides();
+    if (!visibleSlides.length) return;
+    cur = (i + visibleSlides.length) % visibleSlides.length;
+    sl.scrollTo({ left: slideLeft(visibleSlides[cur]), behavior: 'smooth' });
   }
 
   sl.addEventListener('scroll', () => {
@@ -61,7 +81,7 @@
   function stop() { clearInterval(t); }
   function restart() {
     stop();
-    if (!reduced) t = setInterval(() => go(cur + 1), 5000);
+    if (!reduced && slides().length > 1) t = setInterval(() => go(cur + 1), 5000);
   }
 
   const parent = sl.parentNode;
@@ -72,11 +92,17 @@
     parent.addEventListener(ev, restart);
   });
   sl.addEventListener('touchend', restart, { passive: true });
+  new MutationObserver(() => {
+    renderDots();
+    mark();
+    restart();
+  }).observe(sl, { childList: true, attributes: true, attributeFilter: ['hidden'] });
 
   window.addEventListener('resize', () => {
     sl.scrollTo({ left: cur * sl.clientWidth });
   });
 
+  renderDots();
   mark();
   restart();
 })();
@@ -144,31 +170,51 @@
     const sd = box.querySelector('.sd2');
     if (!sd) return;
 
-    const n = sl.children.length;
     let cur = 0;
     let t;
 
-    for (let i = 0; i < n; i++) {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('aria-label', `Photo ${i + 1}`);
-      b.addEventListener('click', () => {
-        go(i);
-        restart();
+    function slides() {
+      return [...sl.children].filter(slide => !slide.hidden);
+    }
+
+    function slideLeft(slide) {
+      return slide.getBoundingClientRect().left - sl.getBoundingClientRect().left + sl.scrollLeft;
+    }
+
+    function renderDots() {
+      sd.replaceChildren();
+      slides().forEach((slide, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', `Photo ${i + 1}`);
+        b.addEventListener('click', () => {
+          go(i);
+          restart();
+        });
+        sd.appendChild(b);
       });
-      sd.appendChild(b);
     }
 
     function mark() {
-      cur = Math.round(sl.scrollLeft / sl.clientWidth) || 0;
+      const visibleSlides = slides();
+      if (!visibleSlides.length) {
+        cur = 0;
+        sd.hidden = true;
+        return;
+      }
+      sd.hidden = false;
+      cur = visibleSlides.reduce((closest, slide, i) =>
+        Math.abs(slideLeft(slide) - sl.scrollLeft) < Math.abs(slideLeft(visibleSlides[closest]) - sl.scrollLeft) ? i : closest, 0);
       [...sd.children].forEach((b, i) => {
         b.setAttribute('aria-current', i === cur ? 'true' : 'false');
       });
     }
 
     function go(i) {
-      cur = (i + n) % n;
-      sl.scrollTo({ left: cur * sl.clientWidth, behavior: 'smooth' });
+      const visibleSlides = slides();
+      if (!visibleSlides.length) return;
+      cur = (i + visibleSlides.length) % visibleSlides.length;
+      sl.scrollTo({ left: slideLeft(visibleSlides[cur]), behavior: 'smooth' });
     }
 
     sl.addEventListener('scroll', mark, { passive: true });
@@ -196,7 +242,7 @@
     function stop() { clearInterval(t); }
     function restart() {
       stop();
-      if (!reduced) t = setInterval(() => go(cur + 1), 6000 + index * 1500);
+      if (!reduced && slides().length > 1) t = setInterval(() => go(cur + 1), 6000 + index * 1500);
     }
 
     ['pointerdown', 'touchstart', 'mouseenter', 'focusin'].forEach(ev => {
@@ -206,11 +252,17 @@
       box.addEventListener(ev, restart);
     });
     sl.addEventListener('touchend', restart, { passive: true });
+    new MutationObserver(() => {
+      renderDots();
+      mark();
+      restart();
+    }).observe(sl, { childList: true, attributes: true, attributeFilter: ['hidden'] });
 
     window.addEventListener('resize', () => {
       sl.scrollTo({ left: cur * sl.clientWidth });
     });
 
+    renderDots();
     mark();
     restart();
   });

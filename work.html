@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Our work &amp; team | Sky Waters Admin</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-app" data-admin-page="editor" data-section="work">
+  <main class="admin-shell">
+    <header class="admin-header"><a class="admin-brand" href="index.html">SKY<span>WATERS</span>ZW</a><button id="sign-out" class="secondary" type="button">Sign out</button></header>
+    <section id="setup-notice" class="notice" hidden><h1>Connect Supabase to get started</h1><p>Add your Supabase project URL and public anon key to <code>backend-config.js</code>, then follow the setup steps in the project README.</p></section>
+    <section id="admin-panel" class="panel" hidden>
+      <div class="editor-heading"><div><p class="eyebrow">SKY WATERS WEBSITE</p><h1>Website content</h1></div></div>
+      <div class="admin-layout">
+        <nav id="admin-nav" class="admin-nav" aria-label="Admin pages"></nav>
+        <div class="admin-content">
+          <div class="page-heading"><h2 id="section-title"></h2><p id="section-description"></p></div>
+          <form id="content-form"><div id="content-fields"></div><div class="save-bar"><span>Save to publish these changes.</span><button id="save-content" type="submit">Save changes</button></div></form>
+        </div>
+      </div>
+    </section>
+    <p id="admin-status" class="status" role="status" aria-live="polite"></p>
+  </main>
+  <script src="backend-config.js"></script><script src="admin.js" defer></script>
+</body>
+</html>
